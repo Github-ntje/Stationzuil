@@ -1,16 +1,33 @@
+a = (datum, feedback, naam())
+outfile.write(a)
+
+
 import csv
 import random
 import datetime
 
-datum = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+datum = datetime.datetime.now()
 
 print('Welkom, laat uw mening en/of opmerking achter over het station waar u zich op dit moment bevindt.')
 naam = input('Vul uw naam in, indien u anoniem wilt blijven vul dan niks in: ')
-if len(naam) <= 0:
-    print('Anoniem')
-else:
-    print(naam)
+
+
+def naamFunctie():
+    outfile = open('feedback.NS.csv', 'a')
+    if len(naam) <= 0:
+        print('Anoniem')
+
+    # if len(naam) > 0:
+    # outfile.write(naam)
+    # outfile.write(', ')
+    # else:
+    # outfile.write('Anoniem, ')
+    # volledig_bericht = f"{naam}, "
+    return naam
+
+
+# naamFunctie()
+
 
 def station():
     stations = open('Stations.txt', 'r').readline()
@@ -19,18 +36,21 @@ def station():
     random_station = random.choice(stationSplitted)
 
     print(f'station {random_station}')
+
+    # outfile = open('feedback.NS.csv', 'a')
+    # outfile.write(random_station)
+    # outfile.write(', ')
+    # outfile.close()
     return random_station
-def naamFunctie():
-    outfile = open('feedback.NS.csv', 'a')
-    if len(naam) <= 0:
-        print('Anoniem')
 
-    if len(naam) > 0:
-        volledig_bericht = f"{naam}, "
-    else:
-         outfile.write('Anoniem')
+# def datum():
+# outfile = open('feedback.NS.csv', 'a')
+# outfile.write(datum)
+# outfile.close()
+# volledig_bericht = f"{station} \n"
+# outfile.write(volledig_bericht)
+# outfile.close()
 
-    return naam
 
 def bericht():
     blijf_controleren = True
@@ -43,8 +63,14 @@ def bericht():
             blijf_controleren = True
         else:
             print('Bedankt voor uw bericht, die is verstuurt op: ')
-
-    volledig_bericht = f"{naamFunctie()}, {feedback}, station {station()}, {datum}'\n'"
+        # outfile.write(feedback)
+    # outfile.write(', ')
+    # outfile.close()
+    # volledig_bericht = (datum, feedback, naam)
+    volledig_bericht = f"{naamFunctie()}, {feedback}, {datum}, {station()}'\n'"
+    print(volledig_bericht)
     outfile.write(volledig_bericht)
     print(datum)
+
+
 bericht()
