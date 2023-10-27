@@ -1,4 +1,4 @@
-#import psycopg
+import psycopg2
 import datetime
 datum = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -13,8 +13,14 @@ def main():
     #het menu gebruik ik zodat er structuur is, hier vraag ik de naam en a-mail van de moderator.
     berichten = gecontroleerd_bericht()
     #hier roep ik bovenstaande variabelen aan om error te voorkomen.
-    naam = input('Voer uw naam in: ')
-    email = input('Voer uw e-mailadres in: ')
+    naam_moderator = input('Voer uw naam in: ')
+    email_moderator = input('Voer uw e-mailadres in: ')
+
+    connection_string = "host='4.234.213.225' dbname='stationszuil' user='postgres' password='Appeltaart123!'"
+    conn = psycopg2.connect(connection_string)
+    cursor = conn.cursor()
+    conn.commit()
+    conn.close()
 
 
 
@@ -22,5 +28,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
