@@ -1,5 +1,5 @@
 CREATE TABLE bericht(
-berichtnr INTEGER NOT NULL,
+berichtnr SERIAL,
 bericht VARCHAR(140),
 naam VARCHAR(255),
 station VARCHAR(255),
@@ -8,12 +8,12 @@ tijd TIME NOT NULL
 );
 
 CREATE TABLE moderator(
-werknemernr INTEGER NOT NULL,
+werknemernr SERIAL,
 naam VARCHAR(255),
 emailadres VARCHAR(255)
 );
 CREATE TABLE beoordeling(
-beoordelingnr INTEGER NOT NULL,
+beoordelingnr SERIAL,
 datum DATE NOT NULL,
 tijd TIME NOT NULL,
 afgekeurd bool NOT NULL,
