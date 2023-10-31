@@ -37,7 +37,7 @@ def main():
     for x in volledig_bericht:
         print('Onderstaand bericht met bijbehorende gegevens is getoond: ' + x)
 
-        controle = input('Om dit bericht goed te keuren toets ja, om dit bericht af te keuren toets nee. Als u wilt stoppen met beoordelen, toets exit: ')
+        controle = input('Om dit bericht goed te keuren toets ja, om dit bericht af te keuren toets nee. Als u wilt stoppen met beoordelen, toets dan exit: ')
         outfile = open('feedback.NS.csv', 'w')
 
         if 'ja' in controle:
