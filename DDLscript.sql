@@ -4,7 +4,7 @@ naam VARCHAR(255),
 station VARCHAR(255),
 datum DATE NOT NULL,
 tijd TIME NOT NULL,
-berichtnr SERIAL
+berichtnr  SERIAL NOT NULL
 );
 
 CREATE TABLE moderator(
@@ -14,10 +14,10 @@ werknemernr SERIAL
 );
 CREATE TABLE beoordeling(
 datum DATE NOT NULL,
-tijd TIME NOT NULL,
+tijd TIME,
 afgekeurd bool NOT NULL,
-werknemernr INTEGER,
-berichtnr INTEGER NOT NULL,
+werknemernr INTEGER SERIAL,
+berichtnr INTEGER SERIAL,
 beoordelingnr SERIAL
 );
 
