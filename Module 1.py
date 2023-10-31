@@ -18,7 +18,7 @@ def station():
     stationSplitted = stations.split(",")
     random_station = random.choice(stationSplitted)
 
-    print(f'station {random_station}')
+    print(f"station {random_station}")
     return random_station
 def naamFunctie():
     outfile = open('feedback.NS.csv', 'a')
@@ -26,7 +26,7 @@ def naamFunctie():
         print('Anoniem')
 
     if len(naam) > 0:
-        volledig_bericht = f"'{naam}, "
+        volledig_bericht = f"{naam}, "
     else:
          outfile.write('Anoniem')
 
@@ -45,7 +45,6 @@ def bericht():
             print('Bedankt voor uw bericht, die is verstuurt op: ')
 
     volledig_bericht = f"{naamFunctie()}, {feedback}, station {station()}, {datum}" '\n'
-   # volledig_bericht = [0, 1, 2, 3]
     outfile.write(volledig_bericht)
     print(datum)
 bericht()
