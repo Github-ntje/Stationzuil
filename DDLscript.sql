@@ -1,24 +1,24 @@
 CREATE TABLE bericht(
-berichtnr SERIAL,
 bericht VARCHAR(140),
 naam VARCHAR(255),
 station VARCHAR(255),
 datum DATE NOT NULL,
-tijd TIME NOT NULL
+tijd TIME NOT NULL,
+berichtnr SERIAL
 );
 
 CREATE TABLE moderator(
-werknemernr SERIAL,
 naam VARCHAR(255),
-emailadres VARCHAR(255)
+emailadres VARCHAR(255),
+werknemernr SERIAL
 );
 CREATE TABLE beoordeling(
-beoordelingnr SERIAL,
 datum DATE NOT NULL,
 tijd TIME NOT NULL,
 afgekeurd bool NOT NULL,
-werknemernr INTEGER NOT NULL,
-berichtnr INTEGER NOT NULL
+werknemernr INTEGER,
+berichtnr INTEGER NOT NULL,
+beoordelingnr SERIAL
 );
 
 ALTER TABLE bericht ADD PRIMARY KEY(berichtnr);

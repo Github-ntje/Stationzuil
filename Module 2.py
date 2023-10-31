@@ -18,21 +18,16 @@ def main():
     # hier roep ik bovenstaande variabelen aan om error te voorkomen.
     naam_moderator = input('Voer uw naam in: ')
     email_moderator = input('Voer uw e-mailadres in: ')
-    werknemernr = str(input('Voer werknemernummer in: '))
 
     connection_string = "host='4.234.213.225' dbname='stationszuil' user='postgres' password='Appeltaart123!'"
     conn = psycopg2.connect(connection_string)
     cursor = conn.cursor()
 
-    query = """INSERT INTO moderator(werknemernr, naam, emailadres) VALUES (%s, %s, %s);"""
-    data = (werknemernr, naam_moderator, email_moderator)
+    query = """INSERT INTO moderator(naam, emailadres) VALUES (%s, %s);"""
+    data = (naam_moderator, email_moderator)
     cursor.execute(query, data)
-
-    #cursor.execute("""SELECT * FROM moderator""");
-    #werknemernr = cursor.fetchone()[0]
     conn.commit()
     conn.close()
-    print('Moderator: ' + str(werknemernr))
 
     for x in volledig_bericht:
         print('Onderstaand bericht met bijbehorende gegevens is getoond: ' + x)
