@@ -1,8 +1,10 @@
 import csv
 import random
 import datetime
+import psycopg2
 
-datum = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+datum = datetime.datetime.now().strftime("%Y-%m-%d")
+tijd =  datetime.datetime.now().strftime("%H:%M:%S")
 
 
 print('Welkom, laat uw mening en/of opmerking achter over het station waar u zich op dit moment bevindt.')
@@ -18,8 +20,10 @@ def station():
     stationSplitted = stations.split(",")
     random_station = random.choice(stationSplitted)
 
-    print(f"station {random_station}")
+    #print('station' + random_station)
     return random_station
+    #print(f"station {random_station}")
+    #print('station' + random_station)
 def naamFunctie():
     outfile = open('feedback.NS.csv', 'a')
     if len(naam) <= 0:
@@ -29,7 +33,7 @@ def naamFunctie():
         volledig_bericht = f"{naam}, "
     else:
          outfile.write('Anoniem')
-
+    outfile.close()
     return naam
 
 def bericht():
@@ -43,8 +47,9 @@ def bericht():
             blijf_controleren = True
         else:
             print('Bedankt voor uw bericht, die is verstuurt op: ')
-
-    volledig_bericht = f"{naamFunctie()}, {feedback}, station {station()}, {datum}" '\n'
+        print(datum)
+        print(tijd)
+    volledig_bericht = f"{naamFunctie()},{feedback},station {station()},{datum},{tijd}\n"
     outfile.write(volledig_bericht)
-    print(datum)
+    outfile.close()
 bericht()

@@ -1,7 +1,7 @@
 import psycopg2
 import datetime
-datum = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-tijd =  datetime.datetime.now().strftime("%H:%M:%S")
+datum = datetime.datetime.now().strftime("%Y-%m-%d")
+tijd = datetime.datetime.now().strftime("%H:%M:%S")
 
 def gecontroleerd_bericht():
     #hier open ik het txt bestand en lees ik elke regel.
@@ -21,35 +21,60 @@ def main():
     conn = psycopg2.connect(connection_string)
     cursor = conn.cursor()
 
-    query = """INSERT INTO moderator(naam, emailadres) VALUES (%s, %s);"""
+    moderator_check_query = """SELECT werknemernr FROM moderator WHERE naam = %s AND emailadres = %s;"""
     data = (naam_moderator, email_moderator)
-    cursor.execute(query, data)
+    cursor.execute(moderator_check_query, data)
+    moderator_check = cursor.fetchone()
+    if moderator_check is None:
+        query = """INSERT INTO moderator(naam, emailadres) VALUES (%s, %s);"""
+        data = (naam_moderator, email_moderator)
+        cursor.execute(query, data)
+        moderator_nummer_query = """SELECT werknemernr FROM moderator WHERE naam = %s;"""
+        data = (naam_moderator,)
+        cursor.execute(moderator_nummer_query, data)
+        werknemernummer = cursor.fetchone()[0]
+    else:
+        werknemernummer = moderator_check[0]
 
+    volledig_bericht_kopie = list(volledig_bericht)
     for x in volledig_bericht:
         print('Onderstaand bericht met bijbehorende gegevens is getoond: ' + x)
 
-        controle = input('Om dit bericht goed te keuren toets true, om dit bericht af te keuren toets false. Als u wilt stoppen met beoordelen, toets dan exit: ')
+        controle = input('Om dit bericht goed te keuren toets false, om dit bericht af te keuren toets true. Als u wilt stoppen met beoordelen, toets dan exit: ')
         outfile = open('feedback.NS.csv', 'w')
 
         if 'true' in controle:
-            print('Bericht is goedgekeurd!')
-        elif 'false' in controle:
             print('Bericht is afgekeurd!')
+        elif 'false' in controle:
+            print('Bericht is goedgekeurd!')
         elif 'exit' in controle:
             return
         else:
             print('Voer true of false in, er is geen andere mogelijkheid. Probeer opnieuw: ')
-        volledig_bericht.remove(x)
-        for i in volledig_bericht:
+        volledig_bericht_kopie.remove(x)
+        for i in volledig_bericht_kopie:
             outfile.write(str(i))
         outfile.close()
-        query = """INSERT INTO beoordeling(datum, tijd, afgekeurd) VALUES (%s, %s, %s);"""
-        data = (datum, tijd, controle)
+
+        # berichten = open('feedback.NS.csv', 'r').readline()
+
+        berichtensplitted = x.strip().split(",")
+
+        bericht_datum = datetime.datetime.strptime(berichtensplitted[3].strip(), "%Y-%m-%d")
+        bericht_tijd = datetime.datetime.strptime(berichtensplitted[4].strip(), "%H:%M:%S")
+
+        query = """INSERT INTO bericht(bericht, naam, station, datum, tijd) VALUES (%s, %s, %s, %s, %s) RETURNING berichtnr;"""
+        data = (berichtensplitted[1], berichtensplitted[0], berichtensplitted[2], bericht_datum, bericht_tijd)
         cursor.execute(query, data)
         conn.commit()
-        conn.close()
+        berichtnummer = cursor.fetchone()[0]
+        query = """INSERT INTO beoordeling(datum, tijd, afgekeurd, werknemernr, berichtnr) VALUES (%s, %s, %s, %s, %s);"""
+        data = (datum, tijd, controle, werknemernummer, berichtnummer)
+        cursor.execute(query, data)
+        conn.commit()
+    conn.close()
     return x
-print ('Beoordeling heeft plaats gevonden op: ' + datum)
+print ('Beoordeling heeft plaats gevonden op: ' + datum + tijd)
 
 
 
