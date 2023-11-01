@@ -1,9 +1,5 @@
 from tkinter import *
 
-
-
-
-
 def onclick():
     label["text"] = entry.get()
 
