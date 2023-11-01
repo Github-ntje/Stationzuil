@@ -16,8 +16,8 @@ CREATE TABLE beoordeling(
 datum DATE NOT NULL,
 tijd TIME,
 afgekeurd bool NOT NULL,
-werknemernr INTEGER SERIAL,
-berichtnr INTEGER SERIAL,
+werknemernr INTEGER,
+berichtnr INTEGER,
 beoordelingnr SERIAL
 );
 
