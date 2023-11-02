@@ -18,7 +18,7 @@ def station():
     stations = open('Stations.txt', 'r').readline()
     #Hier open ik het txt bestand van stations en lees ik het.
     stationSplitted = stations.split(",")
-    random_station = random.choice(stationSplitted)
+    random_station = random.choice(stationSplitted).strip()
     #Met de random functie kiest het programma zelf random een station uit het bestand.
     return random_station
 def naamFunctie():
@@ -51,7 +51,7 @@ def bericht():
         #Hier doe ik het zelfde als bij de naam invoegen, maar dan met de feedback.
         #met de if-statement zorg ik ervoor dat de feedback niet langer dan 140 tekens mag bevatten.
         #Ik gebruik hier een while loop zodat de reiziger bij te veel tekens nog een poging heeft om de feedback te versturen.
-    volledig_bericht = f"{naamFunctie()},{feedback},station {station()},{datum},{tijd}\n"
+    volledig_bericht = f"{naamFunctie()},{feedback},{station()},{datum},{tijd}\n"
     #Hier zorg ik ervoor dat alles netjes op een rijtje in het txt bestand feedback komt te staan.
     #Alles wordt gescheiden met komma's, zodat ik dit later nog makkelijk kan splitten indien nodig.
     #Aan het einde heb ik \n toegevoegd zodat niet alles achter elkaar komt te staan maar elk bericht een aparte regel krijgt.
