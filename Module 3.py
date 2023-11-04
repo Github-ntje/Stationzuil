@@ -1,6 +1,7 @@
 import tkinter as tk
 import psycopg2
 import requests
+#import images
 def weer(locatie_station):
     api_link = 'https://api.openweathermap.org/geo/1.0/direct'
     parameters = {'q': f'{locatie_station},NL',
