@@ -1,7 +1,9 @@
 import tkinter as tk
 import psycopg2
 import requests
-#import images
+from PIL import Image
+from tkinter import PhotoImage
+
 def weer(locatie_station):
     api_link = 'https://api.openweathermap.org/geo/1.0/direct'
     parameters = {'q': f'{locatie_station},NL',
@@ -66,6 +68,9 @@ plaatsen = ["Breda", "Nijmegen", "Amsterdam"]
 for index, plaats in enumerate(plaatsen, start=2):
     knop = tk.Button(beginscherm, text=plaats, command=lambda plaats=plaats: weer(plaats), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
     knop.grid(row=index+1, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
+    if plaatsen == 'Amsterdam':
+        img_pr = tk.PhotoImage(file='img_pr.png')
+        beginscherm.image_create(anchor=E, image=img_pr)
 
 #Verder heb ik hier de 3 stations staan waar we informatie over kunnen krijgen.
 #Dit zijn knoppen geen labels, hier kan je op klikken om een station te kiezen waar je informatie over wilt.
@@ -77,5 +82,15 @@ aankondigingen_tekstvak = tk.Text(beginscherm, height=20, width=100, font= ('Ari
 aankondigingen_tekstvak.grid(row=index+2, column=0, pady=10, padx=10)
 #Hier heb ik de tekstvak gemaakt waar alle berichten in komen te staan.
 
+
+
+
+
+
+
+#img_lift = tk.PhotoImage(file='img_lift.png')
+#img_ovfiets = tk.PhotoImage(file='img_ovfiets.png')
+#img_pr = tk.PhotoImage(file='img_pr.png')
+#img_toilet = tk.PhotoImage(file='img_toilet.png')
 
 beginscherm.mainloop()
