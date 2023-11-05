@@ -78,7 +78,14 @@ aankondigingen_tekstvak = tk.Text(beginscherm, height=20, width=100, font= ('Ari
 aankondigingen_tekstvak.grid(row=index+2, column=0, pady=10, padx=10)
 #Hier heb ik de tekstvak gemaakt waar alle berichten in komen te staan.
 
-lstfaciliteiten = 'ov_bike, elevator, park_and_ride, toilet'
+#def ns_logo():
+    #global img_ns
+    #img_ns = tk.PhotoImage(beginscherm, image='img_ns.png')
+    #positie= (x==20, y==20)
+    #beginscherm.image_create(positie, image='img_ns')
+  #  img_ns = tk.PhotoImage(file='img_ns.png')
+   # beginscherm.image_create(tk.W, image=img_ns)
+
 
 def faciliteiten_breda():
     global img_lift, img_pr
@@ -87,10 +94,16 @@ def faciliteiten_breda():
     img_pr = tk.PhotoImage(file='img_pr.png')
     aankondigingen_tekstvak.image_create(tk.END, image=img_pr)
 
-faciliteit = tk.Button(beginscherm, text="Faciliteiten Breda: ", command=faciliteiten_breda, font=('Arial', 10, 'bold'), bg='dodgerblue2',
-                           fg='snow')
+
+faciliteit = tk.Button(beginscherm, text="Faciliteiten Breda ", command=faciliteiten_breda, font=('Arial', 10, 'bold'), bg='skyblue2',
+                           fg='black')
 faciliteit.grid(row=1, column=0, pady=5, padx=10, sticky=tk.E)
-faciliteit.place(x=140, y=140)
+faciliteit.place(x=140, y=120)
+def tekstbox_legen():
+    aankondigingen_tekstvak.delete("1.0","end")
+knop_verwijderen=tk.Button(beginscherm, height=1, width=15, text="Tekstbox legen ", command=tekstbox_legen, font=('Arial', 10, 'bold'), bg='blue2',
+                           fg='snow')
+knop_verwijderen.grid()
 
 def faciliteiten_nijmegen():
     global img_toilet, img_ovfiets
@@ -100,10 +113,9 @@ def faciliteiten_nijmegen():
     aankondigingen_tekstvak.image_create(tk.END, image=img_ovfiets)
 
 
-faciliteit1 = tk.Button(beginscherm, text="Faciliteiten Nijmegen: ", command=faciliteiten_nijmegen, font=('Arial', 10, 'bold'), bg='dodgerblue2', fg='snow')
+faciliteit1 = tk.Button(beginscherm, text="Faciliteiten Nijmegen ", command=faciliteiten_nijmegen, font=('Arial', 10, 'bold'), bg='skyblue2', fg='black')
 faciliteit1.grid(row=1, column=1, pady=5, padx=10, sticky=tk.E)
-faciliteit1.place(x=320, y=140)
-
+faciliteit1.place(x=320, y=120)
 def faciliteiten_amsterdam():
     global img_lift, img_pr
     img_lift = tk.PhotoImage(file='img_lift.png')
@@ -112,9 +124,9 @@ def faciliteiten_amsterdam():
     aankondigingen_tekstvak.image_create(tk.END, image=img_pr)
     aankondigingen_tekstvak.delete(tk.END)
 
-faciliteit2 = tk.Button(beginscherm, text="Faciliteiten Amsterdam: ", command=faciliteiten_amsterdam, font=('Arial', 10, 'bold'), bg='dodgerblue2', fg='snow')
+faciliteit2 = tk.Button(beginscherm, text="Faciliteiten Amsterdam ", command=faciliteiten_amsterdam, font=('Arial', 10, 'bold'), bg='skyblue2', fg='black')
 faciliteit2.grid(row=1, column=2, pady=5, padx=10, sticky=tk.E)
-faciliteit2.place(x=500, y=140)
+faciliteit2.place(x=500, y=120)
 
 
 
