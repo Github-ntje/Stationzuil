@@ -12,7 +12,7 @@ def weer(locatie_station):
     response = requests.get(api_link, params=parameters)
     resultaten = response.json()
     lat, lon = resultaten[0]['lat'], resultaten[0]['lon']
-
+    #lat en lon zijn de coordinaten van de plek die is gegeven.
     api_link = 'https://api.openweathermap.org/data/2.5/weather'
     parameters ={'lat': lat, 'lon': lon, 'lang': 'nl', 'units': 'metric', 'appid': '3ffae7ec568f5f5e97c5aed2a2c314b9'}
 
@@ -20,17 +20,18 @@ def weer(locatie_station):
     weer_data = response.json()
     temperatuur = weer_data['main']['temp']
 
-    # Database verbinding en ophalen van berichten
     conn = psycopg2.connect("host='4.234.213.225' dbname='stationszuil' user='postgres' password='Appeltaart123!'")
     cur = conn.cursor()
+    #Hier maak ik verbinding met de database zodat ik van daaruit informatie kan ophalen.
     query = "SELECT * FROM Bericht JOIN beoordeling ON bericht.berichtnr = beoordeling.berichtnr WHERE afgekeurd = false AND station = %s ORDER BY bericht.datum DESC, bericht.tijd DESC LIMIT 5"
     #Doormiddel van het gebruik van SELECT, JOIN en WHERE heb ik kunnen filteren dat alleen de GOEDGEKEURDE berichten worden getoond.
-    # Met ORDER BY heb ik ervoor gezorg dat het op volgorde van datum en tijd komt.
-    # Door het gebruik van LIMIT heb ik ervoor gezorg dat er maar 5 berichten worden getoond.
+    #Met ORDER BY heb ik ervoor gezorg dat het op volgorde van datum en tijd komt.
+    #Door het gebruik van LIMIT heb ik ervoor gezorg dat er maar 5 berichten worden getoond.
     cur.execute(query, (locatie_station,))
     volledig_bericht = cur.fetchall()
     cur.close()
     conn.close()
+    #Hier sluit ik de connectie weer.
 
     weer_tekst.config(text=f"Het is momenteel: {temperatuur}°C in {locatie_station}")
     aankondigingen_tekstvak.delete('1.0', tk.END)
@@ -47,7 +48,7 @@ beginscherm.configure(bg='gold')
 beginscherm.geometry("800x700")
 beginscherm.grid_rowconfigure(0, weight=3)
 beginscherm.grid_columnconfigure(0, weight=3)
-#Hier heb ik het beginscherm gemaakt deze is geel is 800x700 en heeft als titel feedback bij stations.
+#Hier heb ik het beginscherm gemaakt deze is geel is 800x700 en heeft als titel 'feedback bij stations'.
 
 begin_tekst = tk.Label(beginscherm, text="Welkom bij info.NS !", font= ('Arial', 15, 'bold'), bg='SkyBlue2', fg='black')
 begin_tekst.grid(column=0, pady=5, padx=5, sticky=tk.N)
@@ -72,8 +73,6 @@ for index, plaats in enumerate(plaatsen, start=2):
     # Verder zal je ook in het witte tekstvak eronder de goedgekeurde berichten zien met de bijbehorende informatie.
 
 
-
-
 aankondigingen_tekstvak = tk.Text(beginscherm, height=20, width=100, font= ('Arial', 10), bd=5, bg='snow', relief='groove')
 aankondigingen_tekstvak.grid(row=index+2, column=0, pady=10, padx=10)
 #Hier heb ik de tekstvak gemaakt waar alle berichten in komen te staan.
@@ -93,17 +92,16 @@ def faciliteiten_breda():
     aankondigingen_tekstvak.image_create(tk.END, image=img_lift)
     img_pr = tk.PhotoImage(file='img_pr.png')
     aankondigingen_tekstvak.image_create(tk.END, image=img_pr)
+    #Hier gebruik ik een functie om de bijbehorende images toe te voegen.
+    #De images verschijnen in de tekstvak.
+    #Voor dit gedeelte heb ik video's opgezocht op het internet.
 
 
 faciliteit = tk.Button(beginscherm, text="Faciliteiten Breda ", command=faciliteiten_breda, font=('Arial', 10, 'bold'), bg='skyblue2',
                            fg='black')
 faciliteit.grid(row=1, column=0, pady=5, padx=10, sticky=tk.E)
 faciliteit.place(x=140, y=120)
-def tekstbox_legen():
-    aankondigingen_tekstvak.delete("1.0","end")
-knop_verwijderen=tk.Button(beginscherm, height=1, width=15, text="Tekstbox legen ", command=tekstbox_legen, font=('Arial', 10, 'bold'), bg='blue2',
-                           fg='snow')
-knop_verwijderen.grid()
+#Hier maak ik een knop aan waar de reiziger op kan klikken om desbetreffende faciliteiten te zien, hier dus van Breda.
 
 def faciliteiten_nijmegen():
     global img_toilet, img_ovfiets
@@ -111,11 +109,13 @@ def faciliteiten_nijmegen():
     aankondigingen_tekstvak.image_create(tk.END, image=img_toilet)
     img_ovfiets = tk.PhotoImage(file='img_ovfiets.png')
     aankondigingen_tekstvak.image_create(tk.END, image=img_ovfiets)
+    #Hier gebruik ik weer een functie om de images te laten verschijnen in het tekstgedeelte.
 
 
 faciliteit1 = tk.Button(beginscherm, text="Faciliteiten Nijmegen ", command=faciliteiten_nijmegen, font=('Arial', 10, 'bold'), bg='skyblue2', fg='black')
 faciliteit1.grid(row=1, column=1, pady=5, padx=10, sticky=tk.E)
 faciliteit1.place(x=320, y=120)
+#Dit is ook een knop die de faciliteiten laat zien van het station, hier is dat dus Nijmegen.
 def faciliteiten_amsterdam():
     global img_lift, img_pr
     img_lift = tk.PhotoImage(file='img_lift.png')
@@ -123,21 +123,22 @@ def faciliteiten_amsterdam():
     img_pr = tk.PhotoImage(file='img_pr.png')
     aankondigingen_tekstvak.image_create(tk.END, image=img_pr)
     aankondigingen_tekstvak.delete(tk.END)
+    #Wederom maak ik gebruik van een functie zodat de images in het tekstvak komen te staan.
 
 faciliteit2 = tk.Button(beginscherm, text="Faciliteiten Amsterdam ", command=faciliteiten_amsterdam, font=('Arial', 10, 'bold'), bg='skyblue2', fg='black')
 faciliteit2.grid(row=1, column=2, pady=5, padx=10, sticky=tk.E)
 faciliteit2.place(x=500, y=120)
+#Ook hier maak ik een knop, maar dan voor de faciliteiten van Amsterdam.
+#Zodra de reiziger hierop drukt verschijnen de images.
 
-
-
-
-
-
-
-
-#img_lift = tk.PhotoImage(file='img_lift.png')
-#img_ovfiets = tk.PhotoImage(file='img_ovfiets.png')
-#img_pr = tk.PhotoImage(file='img_pr.png')
-#img_toilet = tk.PhotoImage(file='img_toilet.png')
+def tekstbox_legen():
+    aankondigingen_tekstvak.delete("1.0","end")
+knop_verwijderen=tk.Button(beginscherm, height=1, width=15, text="Tekstbox legen ", command=tekstbox_legen, font=('Arial', 10, 'bold'), bg='blue2',
+                           fg='snow')
+knop_verwijderen.grid()
+#Ik heb gebruik gemaakt van een verwijder knop, deze hoeft de reiziger alleen te gebruiken na het intikken van de faciliteiten knop.
+#Dit is er zodat de images niet allemaal door elkaar gaan staan.
+#Het is dus belangrijk om deze steeds in te drukken na het toetsen van een faciliteiten knop.
+#Deze knop maakt het tekstvak weer helemaal leeg.
 
 beginscherm.mainloop()
