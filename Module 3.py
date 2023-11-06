@@ -1,6 +1,7 @@
 import tkinter as tk
 import psycopg2
 import requests
+from tkinter import *
 
 def weer(locatie_station):
     api_link = 'https://api.openweathermap.org/geo/1.0/direct'
@@ -8,6 +9,8 @@ def weer(locatie_station):
         'limit': 1,
         'appid': '3ffae7ec568f5f5e97c5aed2a2c314b9'}
     #Hier voer ik de locatie in waarvan API de temperatuur laat verschijnen.
+    #Verder zie je hier ook mijn API key
+    #'q' staat voor
 
     response = requests.get(api_link, params=parameters)
     resultaten = response.json()
@@ -59,21 +62,8 @@ beginscherm.geometry("1000x700")
 beginscherm.grid_rowconfigure(0, weight=3)
 beginscherm.grid_columnconfigure(0, weight=3)
 beginscherm.grid_columnconfigure(1, weight=1)
-#faciliteitenframe = tk.Frame(beginscherm)
-#faciliteitenframe.configure(background='black')
-#faciliteitenframe.grid(column=1, row=0, rowspan=18, sticky='news')
-#faciliteitenframe.grid_rowconfigure(0)
-#faciliteitenframe.grid_rowconfigure(1)
-#faciliteitenframe.grid_rowconfigure(2)
-#faciliteitenframe.grid_rowconfigure(3)
 #Hier heb ik het beginscherm gemaakt deze is geel is 800x700 en heeft als titel 'feedback bij stations'.
 
-def ns_logo():
-    global img_ns
-    img_ns = tk.PhotoImage(file='img_ns.png')
-    beginscherm.image_create(tk.NE, image=img_ns)
-  #  img_ns = tk.PhotoImage(file='img_ns.png')
-   # beginscherm.image_create(tk.W, image=img_ns)
 
 begin_tekst = tk.Label(beginscherm, text="Welkom bij informatie.NS !", font= ('Arial', 15, 'bold'), bg='SkyBlue2', fg='black')
 begin_tekst.grid(column=0, pady=5, padx=5, sticky=tk.N)
@@ -85,25 +75,35 @@ info_tekst.grid(row=0, column=0, pady=5, padx=5)
 #Hier is ook een label gemaakt met extra informatie over het scherm en de dingen die je kan doen hiermee.
 
 weer_tekst = tk.Label(beginscherm, text="Temperatuur", font=('Arial', 11), bg='SkyBlue2', fg='black')
-weer_tekst.grid(row=2, column=0, pady=10, padx=10)
+weer_tekst.grid(row=1, column=0, pady=10, padx=10)
 #Op deze label komt de temperatuur van het gekozen station te staan.
 
-#aankondigingen_tekstvak = tk.Text(beginscherm, height=20, width=100, font= ('Arial', 10), bd=5, bg='snow', relief='groove')
-#aankondigingen_tekstvak.grid(row=index+2, column=0, pady=10, padx=10)
-#Hier heb ik de tekstvak gemaakt waar alle berichten in komen te staan.
-
-plaatsen = ["Breda", "Nijmegen", "Amsterdam"]
-for index, plaats in enumerate(plaatsen, start=2):
-    knop = tk.Button(beginscherm, text=plaats, command=lambda plaats=plaats: weer(plaats), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
-    knop.grid(row=index+1, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
     # Verder heb ik hier de 3 stations staan waar we informatie over kunnen krijgen.
     # Dit zijn knoppen geen labels, hier kan je op klikken om een station te kiezen waar je informatie over wilt.
     # Zodra je op 1 van deze 3 knoppen drukt zal je op de label van Temperatuur de temperatuur zien verschijnen.
     # Verder zal je ook in het witte tekstvak eronder de goedgekeurde berichten zien met de bijbehorende informatie.
-
-
 aankondigingen_tekstvak = tk.Text(beginscherm, height=20, width=100, font= ('Arial', 10), bd=5, bg='snow', relief='groove')
-aankondigingen_tekstvak.grid(row=index+2, column=0, pady=10, padx=10)
+aankondigingen_tekstvak.grid(row=2, column=0, pady=10, padx=10)
+
+frame = Frame(beginscherm)
+frame.grid()
+knopframe = Frame(beginscherm, bg='black')
+knopframe.grid(padx=100, pady=50, sticky=tk.W + tk.E)
+
+
+plaats = ["Breda"]
+knop = tk.Button(frame, text='Breda', command=lambda plaats=plaats: weer('Breda'), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
+knop.grid(row=1, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
+
+plaats = ["Nijmegen"]
+knop = tk.Button(frame, text='Nijmegen', command=lambda plaats=plaats: weer('Nijmegen'), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
+knop.grid(row=2, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
+
+plaats = ["Amsterdam"]
+knop = tk.Button(frame, text='Amsterdam', command=lambda plaats=plaats: weer('Amsterdam'), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
+knop.grid(row=3, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
+
+
 #Hier heb ik de tekstvak gemaakt waar alle berichten in komen te staan.
 
 
