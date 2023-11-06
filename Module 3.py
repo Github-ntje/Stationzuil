@@ -5,28 +5,26 @@ from tkinter import *
 
 def weer(locatie_station):
     api_link = 'https://api.openweathermap.org/geo/1.0/direct'
-    parameters = {'q': f'{locatie_station},NL',
-        'limit': 1,
-        'appid': '3ffae7ec568f5f5e97c5aed2a2c314b9'}
-    #Hier voer ik de locatie in waarvan API de temperatuur laat verschijnen.
+    parameters = {'q': f'{locatie_station},NL', 'appid': '3ffae7ec568f5f5e97c5aed2a2c314b9'}
+    #Hier voer ik de locatie in waarvan API de temperatuur laat verschijnen, door het te zoeken in gegeven link.
     #Verder zie je hier ook mijn API key
     #'q' staat voor
 
     response = requests.get(api_link, params=parameters)
-    resultaten = response.json()
-    lat, lon = resultaten[0]['lat'], resultaten[0]['lon']
+    resultaat = response.json()
+    lat, lon = resultaat[0]['lat'], resultaat[0]['lon']
     #lat en lon zijn de coordinaten van de plek die is gegeven.
     api_link = 'https://api.openweathermap.org/data/2.5/weather'
     parameters ={'lat': lat, 'lon': lon, 'lang': 'nl', 'units': 'metric', 'appid': '3ffae7ec568f5f5e97c5aed2a2c314b9'}
+    #Door de gegeven lat en lon kan het programma nu het weer toevoegen die wordt gezocht via bovenstaande link.
 
     response = requests.get(api_link, params=parameters)
     weer_data = response.json()
-    temperatuur = weer_data['main']['temp']
 
     conn = psycopg2.connect("host='4.234.213.225' dbname='stationszuil' user='postgres' password='Appeltaart123!'")
     cur = conn.cursor()
     #Hier maak ik verbinding met de database zodat ik van daaruit informatie kan ophalen.
-    query = "SELECT * FROM Bericht JOIN beoordeling ON bericht.berichtnr = beoordeling.berichtnr WHERE afgekeurd = false AND station = %s ORDER BY bericht.datum DESC, bericht.tijd DESC LIMIT 5"
+    query = "SELECT * FROM Bericht JOIN beoordeling ON bericht.berichtnr = beoordeling.berichtnr WHERE beoordeling.afgekeurd = false AND station = %s ORDER BY bericht.datum DESC, bericht.tijd DESC LIMIT 5"
     #Doormiddel van het gebruik van SELECT, JOIN en WHERE heb ik kunnen filteren dat alleen de GOEDGEKEURDE berichten worden getoond.
     #Met ORDER BY heb ik ervoor gezorg dat het op volgorde van datum en tijd komt.
     #Door het gebruik van LIMIT heb ik ervoor gezorg dat er maar 5 berichten worden getoond.
@@ -35,7 +33,7 @@ def weer(locatie_station):
     cur.close()
     conn.close()
     #Hier sluit ik de connectie weer.
-
+    temperatuur = weer_data['main']['temp']
     weer_tekst.config(text=f"Het is momenteel: {temperatuur}°C in {locatie_station}")
     aankondigingen_tekstvak.delete('1.0', tk.END)
 
@@ -65,16 +63,16 @@ beginscherm.grid_columnconfigure(1, weight=1)
 #Hier heb ik het beginscherm gemaakt deze is geel is 800x700 en heeft als titel 'feedback bij stations'.
 
 
-begin_tekst = tk.Label(beginscherm, text="Welkom bij informatie.NS !", font= ('Arial', 15, 'bold'), bg='SkyBlue2', fg='black')
+begin_tekst = tk.Label(beginscherm, text="Welkom bij informatie.NS !", font= ('Arial', 15, 'bold'), bg='midnightBlue', fg='snow')
 begin_tekst.grid(column=0, pady=5, padx=5, sticky=tk.N)
 #Vervolgens heb ik een label gemaakt met een welkoms bericht voor de reizigers, hier kunnen ze niet op klikken.
 #Deze is blauw en matcht dus met de kleuren van NS.
 
-info_tekst = tk.Label(beginscherm, text="Hier volgt informatie en feedback over het gekozen station:", font=('Arial, 12'), bg='SkyBlue2', fg='black')
+info_tekst = tk.Label(beginscherm, text="Hier volgt informatie en feedback over het gekozen station:", font=('Arial, 12'), bg='midnightBlue', fg='snow')
 info_tekst.grid(row=0, column=0, pady=5, padx=5)
 #Hier is ook een label gemaakt met extra informatie over het scherm en de dingen die je kan doen hiermee.
 
-weer_tekst = tk.Label(beginscherm, text="Temperatuur", font=('Arial', 11), bg='SkyBlue2', fg='black')
+weer_tekst = tk.Label(beginscherm, text="Temperatuur", font=('Arial', 11), bg='midnightBlue', fg='snow')
 weer_tekst.grid(row=1, column=0, pady=10, padx=10)
 #Op deze label komt de temperatuur van het gekozen station te staan.
 
@@ -92,15 +90,15 @@ knopframe.grid(padx=100, pady=50, sticky=tk.W + tk.E)
 
 
 plaats = ["Breda"]
-knop = tk.Button(frame, text='Breda', command=lambda plaats=plaats: weer('Breda'), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
+knop = tk.Button(frame, text='Breda', command=lambda plaats=plaats: weer('Breda'), font=('Arial', 10, 'bold'), bg='midnightblue', fg='snow')
 knop.grid(row=1, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
 
 plaats = ["Nijmegen"]
-knop = tk.Button(frame, text='Nijmegen', command=lambda plaats=plaats: weer('Nijmegen'), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
+knop = tk.Button(frame, text='Nijmegen', command=lambda plaats=plaats: weer('Nijmegen'), font=('Arial', 10, 'bold'), bg='midnightblue', fg='snow')
 knop.grid(row=2, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
 
 plaats = ["Amsterdam"]
-knop = tk.Button(frame, text='Amsterdam', command=lambda plaats=plaats: weer('Amsterdam'), font=('Arial', 10, 'bold'), bg='blue2', fg='snow')
+knop = tk.Button(frame, text='Amsterdam', command=lambda plaats=plaats: weer('Amsterdam'), font=('Arial', 10, 'bold'), bg='midnightblue', fg='snow')
 knop.grid(row=3, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
 
 
