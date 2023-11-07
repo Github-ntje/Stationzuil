@@ -25,5 +25,6 @@ ALTER TABLE bericht ADD PRIMARY KEY(berichtnr);
 ALTER TABLE moderator ADD PRIMARY KEY(werknemernr);
 ALTER TABLE beoordeling ADD PRIMARY KEY(beoordelingnr);
 
+
 ALTER TABLE beoordeling ADD CONSTRAINT fk_werknemernr FOREIGN KEY(werknemernr) REFERENCES moderator(werknemernr);
 ALTER TABLE beoordeling ADD CONSTRAINT fk_berichtnr FOREIGN KEY(berichtnr) REFERENCES bericht(berichtnr);
