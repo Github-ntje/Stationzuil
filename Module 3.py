@@ -7,8 +7,7 @@ def weer(locatie_station):
     api_link = 'https://api.openweathermap.org/geo/1.0/direct'
     parameters = {'q': f'{locatie_station},NL', 'appid': '3ffae7ec568f5f5e97c5aed2a2c314b9'}
     #Hier voer ik de locatie in waarvan API de temperatuur laat verschijnen, door het te zoeken in gegeven link.
-    #Verder zie je hier ook mijn API key
-    #'q' staat voor
+    #Verder zie je hier ook mijn API key staan
 
     response = requests.get(api_link, params=parameters)
     resultaat = response.json()
@@ -21,7 +20,7 @@ def weer(locatie_station):
     response = requests.get(api_link, params=parameters)
     weer_data = response.json()
 
-    conn = psycopg2.connect("host='4.234.213.225' dbname='stationszuil' user='postgres' password='Appeltaart123!'")
+    conn = psycopg2.connect("host='localhost' dbname='stationszuil' user='postgres' password='2011'")
     cur = conn.cursor()
     #Hier maak ik verbinding met de database zodat ik van daaruit informatie kan ophalen.
     query = "SELECT * FROM Bericht JOIN beoordeling ON bericht.berichtnr = beoordeling.berichtnr WHERE beoordeling.afgekeurd = false AND station = %s ORDER BY bericht.datum DESC, bericht.tijd DESC LIMIT 5"
@@ -36,6 +35,7 @@ def weer(locatie_station):
     temperatuur = weer_data['main']['temp']
     weer_tekst.config(text=f"Het is momenteel: {temperatuur}°C in {locatie_station}")
     aankondigingen_tekstvak.delete('1.0', tk.END)
+    #Hier heb ik een tekstvak gemaakt waarin het weer komt te staan.
 
     if locatie_station == "Nijmegen":
         faciliteiten_nijmegen()
@@ -43,13 +43,13 @@ def weer(locatie_station):
         faciliteiten_amsterdam()
     elif locatie_station == "Breda":
         faciliteiten_breda()
+    #Hier stel ik in dat de images die beneden vermeld staan worden getoond bij het station die genoemd wordt.
+    #Ik roep hier de functie aan die hoort bij het gekozen station, in de functie beneden voer ik de images in.
+    #Op deze manier verschijnen de images dus op het scherm.
 
     for feedback in volledig_bericht:
         gegeven_feedback = f"\nBericht: {feedback[0]}\nNaam: {feedback[1]}\nStation: {feedback[2]}\nDatum: {feedback[3]}\nTijd: {feedback[4]}\n\n"
         aankondigingen_tekstvak.insert(tk.END, gegeven_feedback)
-    #print(feedback[2])
-
-    #Hier heb ik een tekstvak gemaakt waarin het weer komt te staan.
     #Verder heb ik hier ook een for-loop gemaakt waarbij de berichten onder elkaar worden getoond.
     #Doormiddel van een f-string heb ik ervoor gezorg dat de info op goede volgorde met de juiste deel van de gehele feedback regel wordt getoond.
 
@@ -76,17 +76,16 @@ weer_tekst = tk.Label(beginscherm, text="Temperatuur", font=('Arial', 11), bg='m
 weer_tekst.grid(row=1, column=0, pady=10, padx=10)
 #Op deze label komt de temperatuur van het gekozen station te staan.
 
-    # Verder heb ik hier de 3 stations staan waar we informatie over kunnen krijgen.
-    # Dit zijn knoppen geen labels, hier kan je op klikken om een station te kiezen waar je informatie over wilt.
-    # Zodra je op 1 van deze 3 knoppen drukt zal je op de label van Temperatuur de temperatuur zien verschijnen.
-    # Verder zal je ook in het witte tekstvak eronder de goedgekeurde berichten zien met de bijbehorende informatie.
+
 aankondigingen_tekstvak = tk.Text(beginscherm, height=20, width=100, font= ('Arial', 10), bd=5, bg='snow', relief='groove')
 aankondigingen_tekstvak.grid(row=2, column=0, pady=10, padx=10)
+#Hier heb ik de tekstvak gemaakt waar alle berichten in komen te staan.
 
 frame = Frame(beginscherm)
 frame.grid()
 knopframe = Frame(beginscherm, bg='black')
 knopframe.grid(padx=100, pady=50, sticky=tk.W + tk.E)
+#Hier heb ik een frame aangemaakt zodat onderstaande knoppen netjes geordend zouden staan.
 
 
 plaats = ["Breda"]
@@ -101,8 +100,10 @@ plaats = ["Amsterdam"]
 knop = tk.Button(frame, text='Amsterdam', command=lambda plaats=plaats: weer('Amsterdam'), font=('Arial', 10, 'bold'), bg='midnightblue', fg='snow')
 knop.grid(row=3, column=0, pady=5, padx=10, sticky=tk.W+tk.E)
 
-
-#Hier heb ik de tekstvak gemaakt waar alle berichten in komen te staan.
+# Hier de 3 stations staan waar we informatie over kunnen krijgen.
+# Dit zijn knoppen geen labels, hier kan je op klikken om een station te kiezen waar je informatie over wilt.
+# Zodra je op 1 van deze 3 knoppen drukt zal je op de label van Temperatuur de temperatuur zien verschijnen.
+# Verder zal je ook in het witte tekstvak eronder de goedgekeurde berichten zien met de bijbehorende informatie.
 
 
 def faciliteiten_breda():
@@ -113,7 +114,6 @@ def faciliteiten_breda():
     aankondigingen_tekstvak.image_create(tk.END, image=img_pr)
     #Hier gebruik ik een functie om de bijbehorende images toe te voegen.
     #De images verschijnen in de tekstvak zodra je op dknop van desbtreffende station drukt.
-    #Voor dit gedeelte heb ik video's opgezocht op het internet.
 
 def faciliteiten_nijmegen():
     global img_toilet, img_ovfiets

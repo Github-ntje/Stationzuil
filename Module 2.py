@@ -18,7 +18,7 @@ def main():
     email_moderator = input('Voer uw e-mailadres in: ')
     #moderator moet hier naam en e-mail invoeren.
 
-    connection_string = "host='4.234.213.225' dbname='stationszuil' user='postgres' password='Appeltaart123!'"
+    connection_string = "host='localhost' dbname='stationszuil' user='postgres' password='2011'"
     conn = psycopg2.connect(connection_string)
     cursor = conn.cursor()
     #de connectie wordt hier gemaakt tussen de database en pycharm.
